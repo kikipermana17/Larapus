@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\author;
+use Illuminate\Http\Request;
+
+class AuthorController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $author = author::all();
+        return view('author.index', compact('author'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('author.create');
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //validasi data
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
+
+        $author = new author;
+        $author->name = $request->name;
+        $author->save();
+        return redirect()->route('author.index');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\author  $author
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $author = author::findOrFail($id);
+        return view('author.show', compact('author'));
+
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\author  $author
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $author = author::findOrFail($id);
+        return view('author.edit', compact('author'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\author  $author
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //validasi data
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
+
+        $author = author::findOrFail($id);
+        $author->name = $request->name;
+        $author->save();
+        return redirect()->route('author.index');
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\author  $author
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $author = author::findOrFail($id);
+        $author->delete();
+        return redirect()->route('author.index');
+    }
+}
