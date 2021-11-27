@@ -17,4 +17,22 @@ class Book extends Model
     {
         return $this->belongsTo('App\Models\author', 'author_id');
     }
+
+    public function image()
+    {
+        if ($this->cover && file_exists(public_path('image/book/' . $this->cover))) {
+            return asset('image/book/' . $this->cover);
+        } else {
+            return asset('image/no_image.png');
+        }
+    }
+
+    public function deleteImage()
+    {
+        if ($this->cover && file_exists(public_path('image/book/' . $this->cover))) {
+            return unlink(public_path('image/book/' . $this->cover));
+        }
+
+    }
+
 }
